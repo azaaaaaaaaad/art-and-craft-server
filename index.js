@@ -15,7 +15,7 @@ app.use(express.json());
 
 
 app.get('/', (req, res) => {
-    res.send('art and craft server is running')
+  res.send('art and craft server is running')
 })
 
 
@@ -36,7 +36,13 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
+    const craftCollection = client.db('craftsDB').collection('craft')
 
+    app.post('/crafts', async (req, res) => {
+      const newCraft = req.body
+      const result = await craftCollection.insertOne(newCraft);
+      res.send(result)
+    })
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
@@ -53,5 +59,5 @@ run().catch(console.dir);
 
 
 app.listen(port, () => {
-    console.log(`art server is running on port, ${port}`);
+  console.log(`art server is running on port, ${port}`);
 })
