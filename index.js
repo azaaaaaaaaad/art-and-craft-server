@@ -37,11 +37,41 @@ async function run() {
     // await client.connect();
 
     const craftCollection = client.db('craftsDB').collection('craft')
+    const userCollection = client.db('craftsDB').collection('user')
+
+
+    app.get('/crafts', async (req, res) => {
+      const cursor = craftCollection.find();
+      const result = await cursor.toArray();
+      res.send(result)
+    })
+
 
     app.post('/crafts', async (req, res) => {
       const newCraft = req.body
       const result = await craftCollection.insertOne(newCraft);
       res.send(result)
+    })
+
+
+
+
+
+
+
+    //user related apis
+
+    app.get('/users', async(req,res)=>{
+      const cursor = userCollection.find();
+      const result = await cursor.toArray();
+      res.send(result)
+    })
+
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+      console.log(user);
+      const result = await userCollection.insertOne(user);
+      res.send(result);
     })
 
     // Send a ping to confirm a successful connection
