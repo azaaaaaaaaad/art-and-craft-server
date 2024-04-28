@@ -69,6 +69,21 @@ async function run() {
 
 
     //add all craft items
+
+    app.get('/addCraftItems', async(req,res)=>{
+      const cursor = addCraftCollection.find();
+      const result = await cursor.toArray();
+      res.send(result)
+    })
+
+    app.get('/addCraftItems/:id', async(req,res)=>{
+      const id = req.params.id
+      const query = {_id: new ObjectId(id)}
+      const result = await addCraftCollection.findOne(query);
+      res.send(result)
+    })
+
+
     app.post('/addCraftItems', async (req, res) => {
       const newCrafts = req.body;
       console.log(newCrafts);
