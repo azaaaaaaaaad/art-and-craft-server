@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -36,23 +36,45 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
+
+    // craft database of homepage
     const craftCollection = client.db('craftsDB').collection('craft')
     const userCollection = client.db('craftsDB').collection('user')
 
+    //add craft items DB for  All Art & Craft Items page
+    const addCraftCollection = client.db('addCrafts').collection('newCrafts')
 
+
+
+    // craft items 
     app.get('/crafts', async (req, res) => {
       const cursor = craftCollection.find();
       const result = await cursor.toArray();
       res.send(result)
     })
 
-
-    app.post('/crafts', async (req, res) => {
-      const newCraft = req.body
-      const result = await craftCollection.insertOne(newCraft);
+    app.get('/crafts/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await craftCollection.findOne(query);
       res.send(result)
     })
 
+
+    // app.post('/crafts', async (req, res) => {
+    //   const newCraft = req.body
+    //   const result = await craftCollection.insertOne(newCraft);
+    //   res.send(result)
+    // })
+
+
+    //add all craft items
+    app.post('/addCraftItems', async (req, res) => {
+      const newCrafts = req.body;
+      console.log(newCrafts);
+      const result = await addCraftCollection.insertOne(newCrafts)
+      res.send(result)
+    })
 
 
 
@@ -61,7 +83,7 @@ async function run() {
 
     //user related apis
 
-    app.get('/users', async(req,res)=>{
+    app.get('/users', async (req, res) => {
       const cursor = userCollection.find();
       const result = await cursor.toArray();
       res.send(result)
