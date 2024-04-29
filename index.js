@@ -92,9 +92,11 @@ async function run() {
     })
 
 
-    //my art & craft
-    app.get('/myArtAndCraft/id', async(req,res)=>{
-      console.log(req.params.id);
+    // myArtAndCraft
+    app.get('/myArtAndCraft/:email', async(req,res)=>{
+      console.log(req.params.email);
+      const result = await addCraftCollection.find({email:req.params.email}).toArray();
+      res.send(result)
     })
 
 
