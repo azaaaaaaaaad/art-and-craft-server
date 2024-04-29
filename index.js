@@ -92,6 +92,12 @@ async function run() {
     })
 
 
+    //my art & craft
+    app.get('/myArtAndCraft/id', async(req,res)=>{
+      console.log(req.params.id);
+    })
+
+
 
 
 
