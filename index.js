@@ -43,6 +43,7 @@ async function run() {
 
     //add craft items DB for  All Art & Craft Items page
     const addCraftCollection = client.db('addCrafts').collection('newCrafts')
+    const subCategories = client.db('addCrafts').collection('subCategories')
 
 
 
@@ -128,7 +129,7 @@ async function run() {
       res.send(result)
     })
 
-    app.delete('/addCraftItems/:id',  async(req, res) => {
+    app.delete('/addCraftItems/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) }
       const result = await addCraftCollection.deleteOne(query);
@@ -149,6 +150,13 @@ async function run() {
       console.log(user);
       const result = await userCollection.insertOne(user);
       res.send(result);
+    })
+
+    
+    app.get('/subCategories', async (req, res) => {
+      const cursor = subCategories.find()
+      const result = await cursor.toArray();
+      res.send(result)
     })
 
     // Send a ping to confirm a successful connection
