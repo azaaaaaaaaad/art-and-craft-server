@@ -83,6 +83,28 @@ async function run() {
       res.send(result)
     })
 
+    app.post('/addCraftItems', async (req, res) => {
+      const newCrafts = req.body;
+      console.log(newCrafts);
+      const result = await addCraftCollection.insertOne(newCrafts)
+      res.send(result)
+    })
+
+
+    // myArtAndCraft
+    app.get('/myArtAndCraft/:email', async (req, res) => {
+      console.log(req.params.email);
+      const result = await addCraftCollection.find({ email: req.params.email }).toArray();
+      res.send(result)
+    })
+
+    app.get('/myArtAndCraft/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await addCraftCollection.findOne(query);
+      res.send(result)
+    })
+
     app.put('/addCraftItems/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) }
@@ -106,26 +128,10 @@ async function run() {
       res.send(result)
     })
 
-
-    app.post('/addCraftItems', async (req, res) => {
-      const newCrafts = req.body;
-      console.log(newCrafts);
-      const result = await addCraftCollection.insertOne(newCrafts)
-      res.send(result)
-    })
-
-
-    // myArtAndCraft
-    app.get('/myArtAndCraft/:email', async (req, res) => {
-      console.log(req.params.email);
-      const result = await addCraftCollection.find({ email: req.params.email }).toArray();
-      res.send(result)
-    })
-
-    app.get('/myArtAndCraft/:id', async (req, res) => {
+    app.delete('/addCraftItems/:id',  async(req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) }
-      const result = await addCraftCollection.findOne(query);
+      const result = await addCraftCollection.deleteOne(query);
       res.send(result)
     })
 
