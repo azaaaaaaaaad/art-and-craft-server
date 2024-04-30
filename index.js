@@ -70,16 +70,39 @@ async function run() {
 
     //add all craft items
 
-    app.get('/addCraftItems', async(req,res)=>{
+    app.get('/addCraftItems', async (req, res) => {
       const cursor = addCraftCollection.find();
       const result = await cursor.toArray();
       res.send(result)
     })
 
-    app.get('/addCraftItems/:id', async(req,res)=>{
+    app.get('/addCraftItems/:id', async (req, res) => {
       const id = req.params.id
-      const query = {_id: new ObjectId(id)}
+      const query = { _id: new ObjectId(id) }
       const result = await addCraftCollection.findOne(query);
+      res.send(result)
+    })
+
+    app.put('/addCraftItems/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const data = {
+        $set: {
+          image: req.body.image,
+          itemName: req.body.itemName,
+          subcategoryName: req.body.subcategoryName,
+          shortDescription: req.body.shortDescription,
+          price: req.body.price,
+          rating: req.body.rating,
+          customization: req.body.customization,
+          processingTime: req.body.processingTime,
+          stockStatus: req.body.stockStatus,
+          email: req.body.email,
+          name: req.body.name,
+        }
+      }
+      const result = await addCraftCollection.updateOne(query, data);
+      console.log(result);
       res.send(result)
     })
 
@@ -93,15 +116,18 @@ async function run() {
 
 
     // myArtAndCraft
-    app.get('/myArtAndCraft/:email', async(req,res)=>{
+    app.get('/myArtAndCraft/:email', async (req, res) => {
       console.log(req.params.email);
-      const result = await addCraftCollection.find({email:req.params.email}).toArray();
+      const result = await addCraftCollection.find({ email: req.params.email }).toArray();
       res.send(result)
     })
 
-
-
-
+    app.get('/myArtAndCraft/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await addCraftCollection.findOne(query);
+      res.send(result)
+    })
 
 
     //user related apis
